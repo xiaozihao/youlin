@@ -1,0 +1,47 @@
+::-webkit-scrollbar{
+	width: 0px;  
+    height: 0px; 
+}
+
+.nornal{
+    position: relative;
+    height: ;
+    overflow-y: scroll;
+    margin-bottom: 50px;
+}
+
+.items{
+	font-size: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    order-bottom: 1px solid #ff4455;
+    border: 1px solid #ff4455;
+    padding: 15px 0 43px 0;
+}
+
+.itemPoster {
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-image: url(https://img1.doubanio.com/lpic/s29087849.jpg);
+}
+
+.itemPoster:before {
+    content: "";
+    float: left;
+    margin-top: 142.85714%;
+}
+.item {
+    display: inline-block;
+    vertical-align: top;
+    width: 100px;
+    text-align: center;
+}
+.items>* {
+    font-size: .94rem;
+    white-space: normal;
+}
+.item:first-child {
+    margin-left: 1.12rem;
+}
