@@ -122,6 +122,7 @@ class TheatreGroupDetail extends Component{
                     onShare = {()=>this.openModal()}
                     onCollection = {this.onCollection.bind(this,this.state.collectionId,crewInfo.id)}
                     isCollection = { isCollection }
+                    status = {crewInfo.status}
                 />
                 <Menu 
                     className = {styles.menu}

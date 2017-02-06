@@ -23,7 +23,9 @@ const FocusBar = ({
 	cover,
 	onCollection,
 	isCollection,
-	onShare
+	onShare,
+	status
+
 }) => {
 
   return (
@@ -35,6 +37,10 @@ const FocusBar = ({
 			</div>
 			<div className = {styles.firstPublish}>
 			{ isFirst === 1 ? <p>首发</p> : '' }
+			</div>
+
+			<div>
+				{status === 1 ? (<p className={styles.recruit}>筹备中</p>):(<p className={styles.recruit}>招募结束</p>)}
 			</div>
 			<div className = { styles.features}>
 				<img alt="example" src = {vote} onClick = {onCollection}/>
@@ -52,6 +58,7 @@ FocusBar.propTypes = {
     onCollection:PropTypes.func,
     isCollection:PropTypes.bool,
     onShare:PropTypes.func,
+    status:PropTypes.number,
 };
 
 export default FocusBar;

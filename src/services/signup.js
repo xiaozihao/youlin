@@ -25,19 +25,19 @@ export function fetchSendSMS(params) {//发送短信
 // 	});
 // }
 
-export function fetchLogin(params) {//手机登录
-	return request(`${URL}/oauth/login.do`,{
-	    method: 'post',
-	    credentials:'include',
-	    headers: {
-	       "Content-Type":"application/x-www-form-urlencoded",
-	    },
-	    body:`mobile=${params.mobile}&code=${params.code}`,
-	    mode:'cors',
-	 });
-}
+// export function fetchLogin(params) {//手机登录
+// 	return request(`${URL}/oauth/login.do`,{
+// 	    method: 'post',
+// 	    credentials:'include',
+// 	    headers: {
+// 	       "Content-Type":"application/x-www-form-urlencoded",
+// 	    },
+// 	    body:`mobile=${params.mobile}&code=${params.code}`,
+// 	    mode:'cors',
+// 	 });
+// }
 
-export function fetchBindPhoneNumber(params) {//手机登录
+export function fetchBindPhoneNumber(params) {//手机绑定
 	return request(`${URL}/user/bind_mobile.do`,{
 	    method: 'post',
 	    credentials:'include',

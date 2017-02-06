@@ -45,9 +45,11 @@ function TheatreGroupInfo(props){
   return(
   	<div>
 	    <div className={styles.input}>
-	        <p><span>剧名:</span>{data.title?data.title:''}<span className={styles.recruit}>招募中</span></p>
+	        <p><span>剧名:</span>{data.title?data.title:''}
+	        {	data.status === 1 ? (<span className={styles.recruit}>招募中</span>) : <span className={styles.isRecruited}>已完成</span>}
+			</p>
 	        <p><span>题材:</span>{data.theme?data.theme:''}</p>
-	        <p><span>影片类型:</span>{}</p>
+	        <p><span>影片类型:</span>{data.type?data.type:''}</p>
 	        <p><span>播放平台:</span>{}</p>
 	        <p><span>开机时间:</span>{bootTime?bootTime:''}</p>
 	        <p><span>招募开始时间:</span>{startTime?startTime:''}</p>
@@ -69,7 +71,7 @@ function TheatreGroupInfo(props){
 	        <p><span>演员统筹助理电话:</span>{data.comprehensiveAssistantMobile?data.comprehensiveAssistantMobile:''}</p>
 	        <p><span>总策划:</span>{data.schemeName?data.schemeName:''}</p>
 	        <p><span>监制:</span>{data.producerName?data.producerName:''}</p>
-	        <p><span>已定演员:</span>{}</p>
+	        <p><span>已定演员:</span>{data.reservePerformerNames?data.reservePerformerNames:''}</p>
 	        <p><span>副导演:</span>{}</p>
 	        <p><span>副导演电话:</span>{}</p>
 	        <p><span>副导演邮箱:</span>{data.assistantDirectorEmail?data.assistantDirectorEmail:''}</p>
@@ -77,8 +79,7 @@ function TheatreGroupInfo(props){
 	    </div>
       	
       	<div className={styles.introduction}>
-          <p><span>剧情介绍:</span>{}</p>
-          <p><span>暂时报名:</span>{}</p>
+          <p><span>剧情介绍:</span>{data.synopsis?data.synopsis:''}</p>
       	</div>
       	
       	<p className={styles.publicity1}>关于“共同抵制虚假组讯”的公示</p>

@@ -16,10 +16,7 @@ export default {
     	setup({dispatch}) {
 	       dispatch({
 	       		type: 'fetchCanvassingList',
-	       		payload:{
-					'pageNo':0,
-					'pageSize':10,
-				}
+	       		payload:{'pageNo':0,'pageSize':10}
 			})
     	}
   	},

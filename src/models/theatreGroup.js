@@ -1,4 +1,6 @@
-import { fetchList,fetchTagList} from '../services/theatreGroup';
+import { fetchList,fetchTagList,fetchCollection} from '../services/theatreGroup';
+import { message } from 'antd';
+import { relanding } from '../utils/relanding';
 
 export default {
 
@@ -38,6 +40,23 @@ export default {
 		   	if (data.data && data.data.success) {
 		   		yield put({type:'tagSuccess',payload:{tagArray:data.data.resultObject}
 		   		});
+		   	}
+	    },
+	    *collection({ 
+		 	payload 
+		  }, { call, put }) {
+		  	const reqData = yield call(fetchCollection,payload);
+		   	if (reqData.data && reqData.data.success) {
+		   		message.success('收藏'+reqData.data.message);
+		   		yield put({ type:'collectionSuccess',payload:{ isCollection:reqData.data.success} });
+		   	}else{
+		   		if (reqData.data.code === -10) {
+		   			alert(requestData.data.message + ', 请重试');
+                    relanding();
+		   		}
+		   		if (reqData.data.code === -1) {
+		   			message.error(reqData.data.message);
+		   		}
 		   	}
 	    },
 	},

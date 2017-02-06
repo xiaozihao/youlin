@@ -48,14 +48,6 @@ class Rankinglist extends Component {
             allHotRoldCurPageNo: 1,
             fetchAllhot:true,
         });
-        if (e.key === 'allHot') {
-            if (!this.state.fetchAllhot) {
-                this.props.dispatch({
-                    type:'rankinglist/fetchAllRoleList',
-                    payload:{'movieRoleId':null,pageNo:0,pageSize:10}
-                });
-            }
-        }
     }
 
     onNextPage(){
@@ -86,7 +78,7 @@ class Rankinglist extends Component {
         }   
 
         return (
-            <div style = {{paddingBottom:70}}>
+            <div style = {{paddingBottom:50}}>
                 <Nav>
                  <Menu 
                     className = {styles.tab}

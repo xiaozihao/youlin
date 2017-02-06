@@ -59,10 +59,6 @@ class PerformerDetail extends Component{
         this.setState({modalIsOpen: false});
     }
 
-    componentDidMount() {
-
-    }
-
 
     render(){
         const { resultObject, canvassingId } = this.props.performerDetail;
@@ -85,8 +81,6 @@ class PerformerDetail extends Component{
                 data.weight = resultObject.performerAtom.weight;
                 data.roleAtoms = resultObject.roleAtoms;
                 data.id = resultObject.performerAtom.id;
-
-                
             }
 
             var competeRole = [];

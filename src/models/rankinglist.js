@@ -14,6 +14,7 @@ export default {
 	subscriptions: {
     	setup({dispatch}) {
 	       dispatch({type: 'fetchHotestList',payload:{pageNo:0,pageSize:10}})
+	       dispatch({type:'fetchAllRoleList',payload:{'movieRoleId':null,pageNo:0,pageSize:10}})
     	}
   	},
 

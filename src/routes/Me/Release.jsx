@@ -80,7 +80,7 @@ class Release extends Component{
 
 		return (
 	    	<div>
-		    	{ type === 3?<Link to = "/me/creatTheatreGroup" className={styles.btn}>创建剧组</Link>:<div/>}
+		    	{ type === 2?<Link to = "/me/creatTheatreGroup" className={styles.btn}>创建剧组</Link>:<div/>}
 		    	{ReleaseItem}
 		    	<div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
 			</div>

@@ -8,7 +8,8 @@ export default {
 
 	state:{
 		resultObject:[],
-		success:false,
+		thumbUpSuccess:true,
+		nextPage:false,
 	},
 
 	subscriptions: {
@@ -31,7 +32,10 @@ export default {
 		  }, { call, put }) {
 		   	const req = yield call( fetchHotRoleList,payload);
 		   	if (req.data && req.data.success) {
-		   		yield put({type:'queryListSuccess',payload:{...req.data}});
+		   		yield put({type:'queryListSuccess',payload:{
+		   			resultObject:req.data.resultObject,
+		   			nextPage:req.data.nextPage,
+		   		}});
 		   	}
 	    },
 	    *thumbUp({ 
@@ -40,17 +44,20 @@ export default {
 		   	const req = yield call( fetchThumbUp,payload);
 		   	if (req.data){
 			   	if(req.data.success) {
-			   			
+			   		yield put({type:'thumbUpSuccess',payload:{thumbUpSuccess:req.data.success}});
 			   	}else{
-			   		console.log(req.data);
-			   		if (req.data.code === -10) {
+			   		if (req.data.code === -10) {			   			
 			   			alert(req.data.message + ', 请重试');
                         relanding();
-			   		}
-			   		if (req.data.code === -1) {
+			   		}else if (req.data.code === -1) {
+			   			localStorage.removeItem('MY_USER_INFO');
+    					window.location.href = '/#/';
+			   		}else{
 			   			alert(req.data.message);
+			   			yield put({type:'thumbUpSuccess',payload:{thumbUpSuccess:false}});
 			   		}
 			   	}
+			  
 			}
 	    }, 
 
@@ -61,7 +68,14 @@ export default {
 			action.payload.resultObject = state.resultObject.concat(action.payload.resultObject);
 			return{
 				...state,
-				...action.payload
+				resultObject:action.payload.resultObject,
+				nextPage:action.payload.nextPage,
+			}
+		},
+		thumbUpSuccess(state,action){
+			return{
+				...state,
+				thumbUpSuccess:action.payload.thumbUpSuccess
 			}
 		},
 

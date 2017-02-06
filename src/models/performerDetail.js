@@ -38,7 +38,6 @@ export default {
 		 	payload 
 		  }, { call, put ,select}) {
 		   	const resultData = yield call( shareCanvassingId,payload);
-		   	console.log('shareCanvassingId');
 			   if (resultData.data){
 				   if(resultData.data.success) {
 
@@ -85,7 +84,6 @@ export default {
 								});
 
 								wx.ready(function(){
-									alert('ready');
 									wx.onMenuShareAppMessage({
 										title: document.title, // 分享标题
 										desc: '我要成名，赶紧为我投票吧！', // 分享描述
@@ -95,7 +93,6 @@ export default {
 										dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 										success: function () {
 											console.log('success'); 
-											alert('url:' + url);
 										// 用户确认分享后执行的回调函数
 										},
 										cancel: function () { 

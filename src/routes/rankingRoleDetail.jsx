@@ -5,6 +5,7 @@ import Item from '../components/rankingList/allRoleListItem';
 import styles from './rankingRoleDetail.less';
 
 var roldId = '';
+var upCount = '';
 
 class  RankingRoleDetail  extends Component{
 
@@ -32,12 +33,7 @@ class  RankingRoleDetail  extends Component{
     }
 
     upCountClick(id){//点赞
-        this.props.dispatch({
-            type:'rankingRoleDetail/thumbUp',
-            payload:{
-                recordId:id,
-            }
-        });
+        this.props.dispatch({ type:'rankingRoleDetail/thumbUp', payload:{ recordId:id,}});
     }
 
     onNextPage(){
@@ -49,8 +45,7 @@ class  RankingRoleDetail  extends Component{
     }
 
     render(){
-        const { resultObject,nextPage } = this.props.rankingRoleDetail;
-        console.log(resultObject);
+        const { resultObject,nextPage,thumbUpSuccess} = this.props.rankingRoleDetail;
         
         var vNextPage;
         if (nextPage) {
@@ -64,25 +59,30 @@ class  RankingRoleDetail  extends Component{
                 <div className = {styles.nav}>
                     <p>竞演的角色</p>
                 </div>
-                {
-                    resultObject.map((data,i)=>(
-                        <Item
-                            key = {i}
-                            roleName = {data.roleAtom.name}
-                            tagNames = {data.roleAtom.name}
-                            heatCount = {data.recordAtom.heatCount}
-                            nickName = {''}
-                            ranking = {i+1}
-                            headPortrait = {data.recordAtom.headPortrait}
-                            tagNames = {data.roleAtom.tagNames}
-                            upCount = {data.recordAtom.upCount}
-                            voteCount = {data.recordAtom.voteCount}
-                            voteCountClick = {()=>this.voteCountClick()}
-                            upCountClick = {(id)=>this.upCountClick(id)}
-                            recordId = {data.recordAtom.id}
-                            roleId= {data.roleAtom.id}
-                        />
-                    ))   
+                {   
+                    resultObject.length>0 ? (
+                        resultObject.map((data,i)=>{
+                            return(
+                                 <Item
+                                    key = {i}
+                                    roleName = {data.roleAtom.name}
+                                    tagNames = {data.roleAtom.name}
+                                    heatCount = {data.recordAtom.heatCount}
+                                    nickName = {(data.performerAtom &&data.performerAtom.nickName)?data.performerAtom.nickName:'' }
+                                    ranking = {i+1}
+                                    headPortrait = {data.recordAtom.headPortrait}
+                                    tagNames = {data.roleAtom.tagNames}
+                                    upCount = {data.recordAtom.upCount}
+                                    voteCount = {data.recordAtom.voteCount}
+                                    voteCountClick = {()=>this.voteCountClick()}
+                                    upCountClick = {(id)=>this.upCountClick(id)}
+                                    recordId = {data.recordAtom.id}
+                                    roleId= {data.roleAtom.id}
+                                    isThumbUp = {thumbUpSuccess}
+                                />
+                                );
+                            })
+                        ):(<div/>)
                 }
                 <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
             </div>

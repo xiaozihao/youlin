@@ -54,7 +54,7 @@ class ActorInfo extends Component{
         this.setState({selectItem:e.key});
 
         if (e.key === 'otherComment') {
-            this.props.dispatch({type: 'actorInfo/otherComment',payload:{toUserId:userId,pageNo:0,pageSize:10} });
+            this.props.dispatch({type: 'actorInfo/otherComment',payload:{toUserId:userId,pageNo:0,pageSize:100} });
         }
     }
 
@@ -68,13 +68,15 @@ class ActorInfo extends Component{
     }
 
     onSumbit(userId){
-        this.props.dispatch({
-            type:'actorInfo/submitComment',
-            payload:{
-                content:this.state.commentValue,
-                toUserid:userId,
-            }
-        })
+        if (this.state.commentValue) {
+            this.props.dispatch({
+                type:'actorInfo/submitComment',
+                payload:{content:this.state.commentValue,toUserid:userId}
+            })
+        }else{
+            alert('没有任何评价！');
+        }
+        
     }
 
     render() {

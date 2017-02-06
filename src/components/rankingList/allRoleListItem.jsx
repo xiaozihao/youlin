@@ -7,13 +7,28 @@ import vote from '../../assets/rank/vote.png';
 import isvote from '../../assets/rank/isvote.png';
 import headImage from '../../assets/icon/header.png';
 
+
+let vUpCount = 0;
+
 class AllRoleListItem extends Component{
 
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            upCount:props.upCount,
+        };
+    }
+
     onChangeClick(){
+
+        if (this.props.isThumbUp) {
+            this.setState({upCount: this.state.upCount+1});
+        }
         if (this.props.upCountClick) {
             this.props.upCountClick(this.props.recordId);
         }
+       
     }
 
     render(){
@@ -43,11 +58,11 @@ class AllRoleListItem extends Component{
                         <div className={styles.boxBotton}>
                             <div className={styles.count} onClick={()=>this.onChangeClick()}>
                                 <img src = {thumb_up}/>
-                                <span>{upCount}</span>
+                                <span>{this.state.upCount}</span>
                             </div>
-                                <Link href={`http://iwantfame.91youlin.com/wxpay/?roleId=${roleId}`} target="_blank">
-                                    <div className={styles.count}><img src = {vote}/><span>{voteCount}</span></div>
-                                </Link>
+                            <Link href={`http://iwantfame.91youlin.com/wxpay/?roleId=${roleId}`} target="_blank">
+                                <div className={styles.count}><img src = {vote}/><span>{voteCount}</span></div>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -70,6 +85,7 @@ AllRoleListItem.propTypes = {
     voteCountClick:PropTypes.func,
     recordId:PropTypes.number,
     roleId:PropTypes.number,
+    isThumbUp:PropTypes.bool,
 };
 
 export default AllRoleListItem;

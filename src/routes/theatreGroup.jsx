@@ -8,7 +8,7 @@ import TheatreGroupItem from '../components/theatreGroup/theatreGroupItem';
 import { fetchWxOauth} from '../services/wxpay';
 
 var config ={
-	url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx93bec9ce3a446c79&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope=snsapi_userinfo&state=123&#wechat_redirect',
+	url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx93bec9ce3a446c79&redirect_uri=http%3A%2F%2Fiwantfame.91youlin.com&response_type=code&scope=snsapi_userinfo&state=123&#wechat_redirect',
 	userInfo:JSON.parse(localStorage.getItem('MY_USER_INFO')),
 };
 
@@ -23,13 +23,13 @@ class TheatreGroup extends Component{
 	}
 
 	componentWillMount() {	
-		 localStorage.removeItem('MY_USER_INFO');
-		 var info = JSON.parse(localStorage.getItem('MY_USER_INFO'));
-		 if (info !== null) {
-		 	if (!info.userAtom.openId) {
-		 		localStorage.removeItem('MY_USER_INFO');
-		 	}
-		 }
+		// localStorage.removeItem('MY_USER_INFO');
+		// var info = JSON.parse(localStorage.getItem('MY_USER_INFO'));
+		// if (info !== null) {
+		// 	if (!info.userAtom.openId) {
+		// 		localStorage.removeItem('MY_USER_INFO');
+		// 	}
+		// }
 	}
 
 	componentDidMount() {
@@ -96,6 +96,10 @@ class TheatreGroup extends Component{
 	    });
 	    this.setState({curPageNo: this.state.curPageNo + 1});
     }
+
+    onCollection(e){
+    	 this.props.dispatch({ type:'theatreGroup/collection', payload:{ type:1,id:e} });
+    }
    
 	render(){
 
@@ -116,6 +120,7 @@ class TheatreGroup extends Component{
 				}
 			}
 		}
+
 		return (
 			<div>
 		    	<Nav>
@@ -146,6 +151,7 @@ class TheatreGroup extends Component{
 					    				title = {value.title}
 					    				startTime = {value.startTime}
 					    				stopTime = {value.stopTime}
+					    				onCollection = {(e)=>this.onCollection(e)}
 					    			/>
 					    		)
 					    	})
