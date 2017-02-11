@@ -2,6 +2,7 @@ import React,{PropTypes} from 'react';
 import {Button} from 'antd';
 import styles from './FocusBar.less';
 import vote from '../assets/crew/vote.png';
+import collected from '../assets/crew/vote.png';
 import share from '../assets/crew/share.png';
 import rankingList from '../assets/crew/rankingList.png';
 import crewIcon from '../assets/icon/crew.png';
@@ -43,7 +44,7 @@ const FocusBar = ({
 				{status === 1 ? (<p className={styles.recruit}>筹备中</p>):(<p className={styles.recruit}>招募结束</p>)}
 			</div>
 			<div className = { styles.features}>
-				<img alt="example" src = {vote} onClick = {onCollection}/>
+				<img alt="example" src = {isCollection ? vote: collected} onClick = {onCollection}/>
 				<img alt="example" src = {share} onClick = {onShare}/>
 			</div>
 		</div>

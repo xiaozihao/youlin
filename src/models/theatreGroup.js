@@ -51,7 +51,7 @@ export default {
 		   		yield put({ type:'collectionSuccess',payload:{ isCollection:reqData.data.success} });
 		   	}else{
 		   		if (reqData.data.code === -10) {
-		   			alert(requestData.data.message + ', 请重试');
+		   			message.error(requestData.data.message + ', 请重试');
                     relanding();
 		   		}
 		   		if (reqData.data.code === -1) {

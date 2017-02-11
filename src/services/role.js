@@ -59,6 +59,27 @@ export function fetchUpdateVideo(params) {
     });
 }
 
+export function fetchUpdateVideo2(params) {
+    return request('http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=video', {
+        method: 'post',
+        // headers: {
+        //    "Content-Type": "application/x-www-form-urlencoded",
+        // },
+        body: params,
+        // mode:"cors",
+    });
+}
+
+export function fetchAccessToken(params) {
+    return request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx93bec9ce3a446c79&secret=217eb2ac16769d89d47194a5b197ad15', {
+        method: 'get',
+        //headers: {
+        //   "Access-Control-Allow-Origin": "*",
+        //},
+        mode:"no-cors",
+    });
+}
+
 export function fetchSignup(params) {
     return request(`${URL}/user/performer/apply_role.do`, {
         method: 'post',

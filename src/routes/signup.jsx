@@ -74,12 +74,12 @@ const Signup = Form.create()(React.createClass({
 
     selectBtn1(){
        var btn1 =  document.getElementById('performer').id;
-       this.setState({selectIdentity:1});
+       this.setState({selectIdentity:2});
     },
 
     selectBtn2(){
         var btn2 =  document.getElementById('director').id;
-        this.setState({selectIdentity:2});
+        this.setState({selectIdentity:3});
     },
 
     submitFormat() {
@@ -124,11 +124,12 @@ const Signup = Form.create()(React.createClass({
         let tel = document.getElementById('tel').value;
         let format = document.getElementById('format').value;
         if (this.state.selectIdentity && format) {
-            let params={
-                    mobile:tel,
-                    code:format,
+            let params = {
+                mobile:tel,
+                type:this.state.selectIdentity,
+                code:format,
             };
-            fetchLogin(params).then(value=>{
+            fetchBindPhoneNumber(params).then(value=>{
                 if (value.data && value.data.success) {  
 
                     var userInfo = JSON.parse(localStorage.getItem('MY_USER_INFO'));
@@ -152,25 +153,13 @@ const Signup = Form.create()(React.createClass({
                     
                     localStorage.MY_USER_INFO = JSON.stringify(newInfo);
                     document.cookie = 'JSESSIONID=' + newInfo.accessToken;
-                
-                    let params = {
-                        mobile:tel,
-                        type:this.state.selectIdentity,
-                        code:format,
-                    };
 
-                    fetchBindPhoneNumber(params).then(value=>{
-                        if (value.data && value.data.success) {
-                          
-                        }
-                        window.location.href = '/#/me';
-                        window.location.reload(); 
-                    },error=>{
-
-                    });
-
-
-                    // this.context.router.replace('me');
+                    try{
+                        this.context.router.replace('me/edit');
+                    } catch(e) {
+                        window.location.href = '/#/me/edit';
+                        window.location.reload();
+                    }
                 }
             },error=>{
 
@@ -189,6 +178,15 @@ const Signup = Form.create()(React.createClass({
         }
     },  
 
+    cancel(){
+        try{
+            this.context.router.replace('/');
+        } catch(e) {
+            window.location.href = '/';
+            window.location.reload();
+        }
+    },
+
     render(){
 
         const { isSend,userInfo,islogin } = this.props.signup;
@@ -196,8 +194,8 @@ const Signup = Form.create()(React.createClass({
         return (
             <div className={styles.sign}>
             <div className={styles.btnBox}>
-                <Button style={ this.state.selectIdentity === 1 ? style.select :style.noselect } onClick = {this.selectBtn1} id='performer'>成为演员</Button>
-                <Button style={ this.state.selectIdentity === 2 ? style.select :style.noselect}  onClick = {this.selectBtn2} id='director'>成为导演</Button>
+                <Button style={ this.state.selectIdentity === 2 ? style.select :style.noselect } onClick = {this.selectBtn1} id='performer'>成为演员</Button>
+                <Button style={ this.state.selectIdentity === 3 ? style.select :style.noselect}  onClick = {this.selectBtn2} id='director'>成为导演</Button>
             </div>
                 <Form>
                     <div className = {styles.input}>
@@ -209,6 +207,7 @@ const Signup = Form.create()(React.createClass({
                     </div>
                 </Form>
                 <Button type='primary' onClick = { this.login } className={styles.btn}>确定</Button>
+                <Button type='primary' onClick = { this.cancel } className={styles.btn2}>取消</Button>
             </div>
         );
     }

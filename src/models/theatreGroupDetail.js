@@ -33,7 +33,7 @@ export default {
 			         	dispatch({ type:'roleInfo',payload:{groupId:userId,ids:[],pageNo:0,pageSize:10} });
 			         	dispatch({ type: 'theatreGroupInfo', payload:{id:userId} });
 		        	}
-		        dispatch({ type: 'queryWXJSSDK', payload:{url:window.location.href.split('#')[0] }});
+		        //dispatch({ type: 'queryWXJSSDK', payload:{url:window.location.href.split('#')[0] }});
 		     });
 		},
   	},
@@ -77,7 +77,7 @@ export default {
 		   		yield put({ type:'collectionSuccess',payload:{ isCollection:reqData.data.success} });
 		   	}else{
 		   		if (reqData.data.code === -10) {
-		   			alert(requestData.data.message + ', 请重试');
+		   			alert(reqData.data.message + ', 请重试');
                     relanding();
 		   		}
 		   		if (reqData.data.code === -1) {

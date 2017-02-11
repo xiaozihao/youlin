@@ -9,7 +9,7 @@ import UpdatePhotos from './UpdatePhotos';
 import UpdateVideo from './UpdateVideo';
 import PerformExperience from './PerformExperience';
 
-import { fetchUpdatePhoto,fetchUpdateVideo } from '../../services/role';
+import { fetchUpdatePhoto,fetchAccessToken } from '../../services/role';
 
 var config ={
     userInfo:JSON.parse(localStorage.getItem('MY_USER_INFO')),
@@ -28,7 +28,7 @@ class Edit extends Component{
         this.state={
             selectItem: 'info',
             component:'',
-            cover:'',
+            coverUrl:'',
             loading:true,
             error:'',
             trailersUrl:'',
@@ -39,7 +39,7 @@ class Edit extends Component{
     componentWillMount() {
         if(config.userInfo!= null && config.userInfo.userAtom && config.userInfo.userAtom.mobile){
            this.setState({
-                cover:config.userInfo.userAtom.cover,
+                coverUrl:config.userInfo.userAtom.cover,
                 trailersUrl:config.userInfo.userAtom.trailersUrl,
                 introduceMyselfMoveUrl:config.userInfo.userAtom.introduceMyselfMoveUrl,
             });
@@ -48,6 +48,12 @@ class Edit extends Component{
             window.location.href = '/#/signup';
             window.location.reload();
         }
+    }
+
+    componentDidMount() {
+        fetchAccessToken().then(value => {
+            console.log(JSON.stringify(value));
+        },error => {);
     }
 
     onSelect(e){
@@ -80,7 +86,10 @@ class Edit extends Component{
         formData.append('userfile',files[0]);
 
         fetchUpdatePhoto(formData).then(
-            value => this.props.dispatch({ type:'edit/setCover',payload:{cover:value.data.url}}),
+            value => {
+                this.setState({cover:value.data.url});
+                this.props.dispatch({ type:'edit/setCover',payload:{cover:value.data.url}});
+                },
             error => this.setState({error: error})
         );
     }         
@@ -122,7 +131,7 @@ class Edit extends Component{
     updateSecondVideo(files){
         var formData = new FormData();
         formData.append('userfile',files[0]);
-        fetchUpdateVideo(formData).then(
+        fetchUpdateVideo2(formData).then(
             value => {
                 this.props.dispatch({ type:'edit/updateSecondVideo',payload:{trailersUrl:value.data.url,introduceMyselfMoveUrl:''}});
                 this.setState({
@@ -187,7 +196,7 @@ class Edit extends Component{
 	 	return (
             <div>
                 <div>
-                    <img src = {this.state.cover } style ={{backgroundSize: 'cover',width:'100%',height:180}}/>
+                    <img src = {this.state.coverUrl } style ={{backgroundSize: 'cover',width:'100%',height:180}}/>
                 </div>
                
                 <div>

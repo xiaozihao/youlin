@@ -149,7 +149,7 @@ class PerformerDetail extends Component{
                     <div className={styles.video}>
                         <p className={styles.name}>视频展示</p>
                         <div>
-                        <video poster = {videoIcon} src={ data.residentCity} controls="controls" className={styles.videos}>
+                        <video poster = {videoIcon} src={ data.introduceMyselfMove} controls="controls" className={styles.videos}>
                         </video>
                         </div>
                     </div>

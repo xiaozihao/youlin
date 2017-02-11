@@ -32,9 +32,9 @@ class Me extends Component{
 
 	render(){
 
-		config.userInfo = JSON.parse(localStorage.getItem('MY_USER_INFO')) || {};
-		var tags = config.userInfo && config.userInfo.userAtom.tags && JSON.parse(config.userInfo.userAtom.tags);
-		var specialtys = config.userInfo && config.userInfo.userAtom.specialtys && JSON.parse(config.userInfo.userAtom.specialtys);
+		config.userInfo = JSON.parse(localStorage.getItem('MY_USER_INFO'));
+		var tags = config.userInfo && config.userInfo.userAtom.tags && JSON.parse(config.userInfo.userAtom.tags) || [];
+		var specialtys = config.userInfo && config.userInfo.userAtom.specialtys && JSON.parse(config.userInfo.userAtom.specialtys) || [];
 
 		const type = config.userInfo && config.userInfo.userAtom && config.userInfo.userAtom.type || null;
 	

@@ -86,11 +86,11 @@ export default {
 			   if (resultData.data) {
 			   		if (resultData.data.success) {
 			   			message.success('设置封面'+resultData.data.message);
-			   			// yield put({
-				   		// 	type:'setCoverSuccess',
-				   		// 	payload:{
-				   		// 		// coverUrl:resultData.data.resultObject.cover,
-				   		// }});
+			   			yield put({
+				   			type:'setCoverSuccess',
+				   		 	payload:{
+				   		 		coverUrl:resultData.data.resultObject.cover,
+				   		}});
 				   		var status = resultData.data.resultObject.status;
 			   			var myUserInfo = JSON.parse(localStorage.MY_USER_INFO);
 			   			if (myUserInfo && status) {

@@ -1,5 +1,5 @@
 import React,{ Component, PropTypes } from 'react';
-import {Spin, Button,Tag,Affix } from 'antd';
+import {Spin, Button,Tag,Affix,message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './theatreGroup.less';
@@ -30,10 +30,12 @@ class TheatreGroup extends Component{
 		// 		localStorage.removeItem('MY_USER_INFO');
 		// 	}
 		// }
+
+		this.getUserInfo();
 	}
 
 	componentDidMount() {
-		this.getUserInfo();
+		
 	}
 
 	getUserInfo(){
@@ -57,6 +59,10 @@ class TheatreGroup extends Component{
 
     getUser(code){
     	fetchWxOauth(code).then(function(value) {
+    		if (value.data.code !== 0) {
+    			message.error(value.data.message);
+    			return;
+    		}
     		document.cookie='JSESSIONID='+ value.data.resultObject.accessToken;
     		//只保存需要的参数
     		var myUserInfoStr = localStorage.getItem('MY_USER_INFO');
@@ -70,11 +76,11 @@ class TheatreGroup extends Component{
     		}
     		myUserInfo.refreshToken = value.data.resultObject.refreshToken;
     		myUserInfo.accessToken = value.data.resultObject.accessToken;
-    		myUserInfo.userAtom = myUserInfo.userAtom || {};
-    		myUserInfo.userAtom.username = value.data.resultObject.userAtom.username;
-    		myUserInfo.userAtom.nickName = value.data.resultObject.userAtom.username;
-    		myUserInfo.userAtom.headImg = value.data.resultObject.userAtom.headImg;
-    		myUserInfo.userAtom.openId = value.data.resultObject.userAtom.openId;
+    		myUserInfo.userAtom = myUserInfo.userAtom || value.data.resultObject.userAtom;
+    		//myUserInfo.userAtom.username = value.data.resultObject.userAtom.username;
+    		myUserInfo.userAtom.nickName = value.data.resultObject.userAtom.nickName || value.data.resultObject.userAtom.username;
+    		//myUserInfo.userAtom.headImg = value.data.resultObject.userAtom.headImg;
+    		//myUserInfo.userAtom.openId = value.data.resultObject.userAtom.openId;
             localStorage.setItem('MY_USER_INFO',JSON.stringify(myUserInfo));
         }, function(value) {
             console.log('req error!');

@@ -19,7 +19,7 @@ function UpdateVideo({
         <div className={styles.prompt}>
           <video  src='http://www.w3school.com.cn/i/movie.ogg' className={styles.video} controls="controls">
           </video>
-          <p>实力视频提示用户</p>
+          <p>示例视频提示用户</p>
         </div>
         <div className={styles.box}>
             <video controls="controls"  className={styles.upVideo} src={introduceMyselfMoveUrl}>

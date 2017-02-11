@@ -1,5 +1,5 @@
 import React,{ Component, PropTypes } from 'react';
-import { Form, Tooltip,Icon,Input,Tag,Button,} from 'antd';
+import { Form, Tooltip,Icon,Input,Tag,Button,message} from 'antd';
 import styles from './BaseInfo.less';
 
 const CheckableTag = Tag.CheckableTag;
@@ -92,7 +92,7 @@ const BaseInfo = Form.create()(React.createClass({
             nickName:values.nickName,
             cover:'',
             sex:values.sex,
-            birthDate:values.birthDate,
+            birthDate: '2017/1/1',
             constellation:values.constellation,
             weight:values.weight,
             height:values.height,
@@ -105,6 +105,11 @@ const BaseInfo = Form.create()(React.createClass({
             tags:JSON.stringify(this.state.selectedPersionTagId),
             specialtys:JSON.stringify(this.state.selectedSpecialtyTagId),
             description:values.description,
+        }
+
+        if (!submitData.nickName || !submitData.sex || !submitData.height || !submitData.weight || !submitData.ageGroup) {
+            message.error('必填字段未填写完整');
+            return;
         }
       }
       if ( this.props.submitData) {
@@ -157,16 +162,19 @@ const BaseInfo = Form.create()(React.createClass({
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label ='年龄(必填)'
+                        label ='年龄段(必填)'
                         hasFeedback
                     >
-                        {getFieldDecorator('birthDate',{initialValue:this.state.userInfo.birthDate})(  
-                            <Input 
-                                size="large" 
-                                placeholder="请选择出生日期" 
-                                className={styles.item} 
-                                type='date'
-                              />
+                        {getFieldDecorator('ageGroup',{initialValue:this.state.userInfo.ageGroup})(  
+                            <select className={styles.item} size="large">
+                                <option value>未知</option>
+                                <option value={'50后'}>50后</option>
+                                <option value={'60后'}>60后</option>
+                                <option value={'70后'}>70后</option>
+                                <option value={'80后'}>80后</option>
+                                <option value={'90后'}>90后</option>
+                                <option value={'00后'}>00后</option>
+                            </select>
                         )}
                     </FormItem>
 
@@ -209,19 +217,7 @@ const BaseInfo = Form.create()(React.createClass({
                             />
                         )}
                     </FormItem>
-                    <FormItem
-                        {...formItemLayout}
-                        label ='年龄段(必填)'
-                        hasFeedback
-                    >
-                        {getFieldDecorator('ageGroup',{initialValue:this.state.userInfo.ageGroup})(  
-                            <Input 
-                                size="large" 
-                                placeholder="请选择年龄段" 
-                                className={styles.item} 
-                            />
-                        )}
-                    </FormItem>
+                    
                     <FormItem
                         {...formItemLayout}
                         label ='常住城市'
@@ -265,7 +261,7 @@ const BaseInfo = Form.create()(React.createClass({
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label ='毕业学校'
+                        label ='所学专业'
                         hasFeedback
                     >
                         {getFieldDecorator('professional',{initialValue:this.state.userInfo.professional})(  

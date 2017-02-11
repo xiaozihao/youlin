@@ -52,7 +52,9 @@ const Performer = ({
     		</Carousel>
 	  		{
 
-				resultObject.map((data, i) => (
+				resultObject.filter((data) => {
+					return data.status === 2;
+				}).map((data, i) => (
 				 	<Link to={`performerDetail/?detailId=${data.id}`} style = {{color:'#999'}}>
 		    			<PerformerListItem
 		    				key = {i}
