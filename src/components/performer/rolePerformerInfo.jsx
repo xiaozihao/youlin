@@ -166,9 +166,9 @@ class PersonalInfo extends Component{
             </div>
             <div className={styles.canvass}>
                 <Button type="primary" className={styles.btn}><Icon type="link" />
-                     <a href={`http://iwantfame.91youlin.com/wxpay/?roleId=${ data.id}`} target="_blank">给他投票</a>
+                     <a href={`http://iwantfame.91youlin.com/wxpay/?roleId=${ data.id}`} target="_blank">我要竞演</a>
                 </Button>
-                <Button type="primary" onClick={()=>this.openModal()} className={styles.btn} ><Icon type="link" />为他投票</Button>
+                <Button type="primary" onClick={()=>this.openModal()} className={styles.btn} ><Icon type="link" />竞演角色</Button>
                 <Button type="primary"  onClick={()=>{this.signup()}} className={styles.btn}>
                     <Icon type="link" />
                     我要报名

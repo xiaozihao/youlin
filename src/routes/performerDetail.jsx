@@ -62,9 +62,6 @@ class PerformerDetail extends Component{
 
     render(){
         const { resultObject, canvassingId } = this.props.performerDetail;
-
-        console.log(canvassingId);
-
             if(resultObject.length !== 0){
                 data.nickName = resultObject.performerAtom.nickName;
                 data.ageGroup = resultObject.performerAtom.ageGroup;
@@ -92,7 +89,11 @@ class PerformerDetail extends Component{
 
             return (
                 <div style = {{marginBottom:50}}>
-                    <img src={data.cover?data.cover:coverIcon} style = {{height:170,width:'100%',display:'flex',justifyContent:'space-between',position:'relative'}}/>
+
+                    <div className = {styles.imgDiv}>
+                        <img src={data.cover?data.cover:coverIcon} />
+                    </div>
+
                     <div className= {styles.topBox}>
                         <div>
                             <p>{data.nickName}</p>
@@ -120,13 +121,7 @@ class PerformerDetail extends Component{
                             </div>
                         </div>
                     </div>
-                    <div className={styles.role}>
-                        <div>
-                            <p className={styles.name}>竞演角色</p>
-                            { competeRole}
-                        </div>
-                        <p className={styles.more}><Link to = {`hotRole/hotRoleItem/${data.id}`}>更多>></Link></p>
-                    </div>
+                    
                     <div className={styles.essential}>
                         <p className={styles.name}>基本信息</p>
                         <div className={styles.personalData}>
@@ -146,7 +141,7 @@ class PerformerDetail extends Component{
                             <img src={ data.photos?data.photos:photoIcon}/>
                         </div>
                     </div>
-                    <div className={styles.video}>
+                    <div className={styles.video}>  
                         <p className={styles.name}>视频展示</p>
                         <div>
                         <video poster = {videoIcon} src={ data.introduceMyselfMove} controls="controls" className={styles.videos}>
@@ -156,7 +151,7 @@ class PerformerDetail extends Component{
 
                     <div className={styles.canvass}>
                         <Button type="primary" className={styles.btn1}><img src={vote}/>
-                            <a href={`http://iwantfame.91youlin.com/wxpay/?roleId=${data.id}&canvassingId=${canvassingId}`} target="_blank">给他投票</a>
+                            <Link to = {`hotRole/hotRoleItem/${data.id}`}>查看所有申请角色</Link>
                         </Button>
                         <Button onClick={()=>this.openModal()} type="primary" className={styles.btn2}><img src={share}/>为他拉票</Button>
                     </div>
@@ -194,3 +189,13 @@ PerformerDetail.propTypes = {
 };
 
 export default connect(mapStateToProps)(PerformerDetail);
+
+// <div className={styles.role}>
+//                         <div>
+//                             <p className={styles.name}>竞演角色</p>
+//                             { competeRole}
+//                         </div>
+//                         <p className={styles.more}><Link to = {`hotRole/hotRoleItem/${data.id}`}>更多>></Link></p>
+//                     </div>
+                            // <a href={`http://iwantfame.91youlin.com/wxpay/?roleId=${data.id}&canvassingId=${canvassingId}`} target="_blank"></a>
+

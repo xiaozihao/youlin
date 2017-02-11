@@ -1,7 +1,10 @@
 import React,{ Component, PropTypes } from 'react';
 import pathToRegexp from 'path-to-regexp';
 import { connect } from 'dva';
-import { Menu } from 'antd';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
 import ContestPollList from '../components/contest/contestPollList';
 import ContestRoleList from './contestRoleList';
 import banner from '../assets/crew/banner.png';
@@ -19,7 +22,14 @@ const styles = {
     }
 };
 
-const Item = Menu.Item;
+const tab_styles = {
+    menuItem:{
+        backgroundColor:'#ffffff',
+        color:'#FC7E2A',
+        fontSize:17,
+    }
+}
+
 var valueId;
 
 class ContestPoll extends Component{
@@ -40,7 +50,7 @@ class ContestPoll extends Component{
          window.location.reload();    
     }
 
-    changeClick(id){
+    changeClick=(id)=>{
         this.props.dispatch({
             type:'contestPoll/fetchContestRoleList',
             payload:{"theaterGroupId":null, "movieRoleId":id , "pageNo":0, "pageSize":50
@@ -48,8 +58,7 @@ class ContestPoll extends Component{
         })
     }
 
-    onSelect(e){
-        this.setState({selectItem:e.key});
+    handleChange=(e)=>{
 
         var groundId = '';
         const match = pathToRegexp('/roleList/contestPoll/:groundId').exec(this.props.location.pathname);
@@ -59,14 +68,15 @@ class ContestPoll extends Component{
           valueId = groundId.replace(/[^0-9]/ig,"");
         }   
 
-        //console.log('onSelect:' + this.state.selectItem);
 
-        if (e.key === 'contestRole') {
+        if (e === 'contestRole') {
             this.props.dispatch({
                 type: 'contestPoll/fetchRoleList',
                 payload:{'groupId':valueId,"ids":[], 'pageNo':0,'pageSize':10
             }})
         }
+
+        this.setState({selectItem:e});
     }
 
      onNextPage(){
@@ -89,33 +99,30 @@ class ContestPoll extends Component{
         }   
 
         return (
-            <div>
-                <img src = {banner} width='100%' height = '170'/>
-                <Menu 
-                    style = {styles.tab}
-                    mode = "horizontal"
-                    selectedKeys={[this.state.selectItem]}
-                    onSelect = {(e)=>this.onSelect(e)}
-                >
-                    <Item key={'allContest'} style = { styles.tabItem }>总投票</Item>
-                    <Item key={'contestRole'} style = { styles.tabItem }>角色榜</Item>
-                </Menu>
-                {
-                    this.state.selectItem === 'allContest' ? 
-                    (<div>
-                        <ContestPollList data = {allContestData}/>
-                        <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
-                    </div>)
-                    : 
-                    <ContestRoleList
-                        changeClick = {(id)=>this.changeClick(id)}
-                        roleData = {roleData} 
-                        data = {contestRoleData}
-                        groundId = {valueId}
-                    />
-                    
-                }
-            </div>
+            <MuiThemeProvider>
+                <div>
+                    <img src = {banner} width='100%' height = '180'/>
+                        <Tabs
+                            value={this.state.selectItem}
+                            onChange={this.handleChange}
+                          >
+                            <Tab style = {tab_styles.menuItem} label="总投票" value="allContest" >
+                                <div>
+                                    <ContestPollList data = {allContestData}/>
+                                    <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
+                                </div>
+                            </Tab>
+                            <Tab style = {tab_styles.menuItem} label="角色榜" value="contestRole">
+                                <ContestRoleList
+                                    changeClick = {this.changeClick}
+                                    roleData = {roleData} 
+                                    data = {contestRoleData}
+                                    groundId = {valueId}
+                                />
+                            </Tab>
+                          </Tabs>
+                </div>
+            </MuiThemeProvider>
         );
     }
  
@@ -124,7 +131,6 @@ class ContestPoll extends Component{
 function mapStateToProps({ contestPoll }) {
   return { contestPoll };
 }
-
 
 ContestPoll.propTypes = {
 	location:PropTypes.object,

@@ -34,7 +34,7 @@ class AllRoleListItem extends Component{
     render(){
         const { heatCount,nickName,roleName,ranking,
                 tagNames,headPortrait,upCount,voteCount,
-                upCountClick,voteCountClick,roleId
+                upCountClick,voteCountClick,roleId,groupName
             } = this.props; 
 
          return (
@@ -45,7 +45,7 @@ class AllRoleListItem extends Component{
                         <div className={styles.character}>
                             <p>{nickName}</p>
                             <p>
-                                <span>《水浒传》</span>
+                                <span>《{groupName}》</span>
                                 <span className={styles.fontColor}>{roleName}</span>
                                 <span>第{ranking}名</span>
                                 <span className={styles.fontColor}>{heatCount}</span>
@@ -86,6 +86,7 @@ AllRoleListItem.propTypes = {
     recordId:PropTypes.number,
     roleId:PropTypes.number,
     isThumbUp:PropTypes.bool,
+    groupName:PropTypes.string,
 };
 
 export default AllRoleListItem;

@@ -7,6 +7,12 @@ import Nav from '../components/layout/nav';
 import TheatreGroupItem from '../components/theatreGroup/theatreGroupItem';
 import { fetchWxOauth} from '../services/wxpay';
 
+
+//test
+import img1 from '../assets/0209/1.png';
+import img2 from '../assets/0209/大话食神.png';
+
+
 var config ={
 	url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx93bec9ce3a446c79&redirect_uri=http%3A%2F%2Fiwantfame.91youlin.com&response_type=code&scope=snsapi_userinfo&state=123&#wechat_redirect',
 	userInfo:JSON.parse(localStorage.getItem('MY_USER_INFO')),
@@ -30,12 +36,10 @@ class TheatreGroup extends Component{
 		// 		localStorage.removeItem('MY_USER_INFO');
 		// 	}
 		// }
-
-		this.getUserInfo();
 	}
 
 	componentDidMount() {
-		
+		this.getUserInfo();
 	}
 
 	getUserInfo(){
@@ -127,6 +131,8 @@ class TheatreGroup extends Component{
 			}
 		}
 
+		console.log(img1);
+
 		return (
 			<div>
 		    	<Nav>
@@ -155,13 +161,17 @@ class TheatreGroup extends Component{
 					    				id = {value.id}
 					    				cover = {value.cover}
 					    				title = {value.title}
+					    				isFirst = {value.isFirst}
+					    				isNewest = {value.isNewest}
 					    				startTime = {value.startTime}
 					    				stopTime = {value.stopTime}
+					    				createTime = {value.createTime}
 					    				onCollection = {(e)=>this.onCollection(e)}
 					    			/>
 					    		)
 					    	})
 					    }
+
 					   <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
 			  		</div>
 			    </Nav>

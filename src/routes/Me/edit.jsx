@@ -1,5 +1,9 @@
 import React,{ Component, PropTypes } from 'react';
 import { Menu,Affix } from 'antd';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
 import { Link } from 'dva/router';
 import { connect } from 'dva';
 import styles from './edit.less';
@@ -9,7 +13,7 @@ import UpdatePhotos from './UpdatePhotos';
 import UpdateVideo from './UpdateVideo';
 import PerformExperience from './PerformExperience';
 
-import { fetchUpdatePhoto,fetchAccessToken } from '../../services/role';
+import { fetchUpdatePhoto,fetchUpdateVideo } from '../../services/role';
 
 var config ={
     userInfo:JSON.parse(localStorage.getItem('MY_USER_INFO')),
@@ -20,6 +24,14 @@ const EditType = {
     edit:PropTypes.object,
 };
 
+const tab_styles = {
+    menuItem:{
+        backgroundColor:'#ffffff',
+        color:'#FC7E2A',
+        fontSize:17,
+    }
+}
+
 const Item = Menu.Item;
 
 class Edit extends Component{
@@ -28,7 +40,7 @@ class Edit extends Component{
         this.state={
             selectItem: 'info',
             component:'',
-            coverUrl:'',
+            cover:'',
             loading:true,
             error:'',
             trailersUrl:'',
@@ -39,7 +51,7 @@ class Edit extends Component{
     componentWillMount() {
         if(config.userInfo!= null && config.userInfo.userAtom && config.userInfo.userAtom.mobile){
            this.setState({
-                coverUrl:config.userInfo.userAtom.cover,
+                cover:config.userInfo.userAtom.cover,
                 trailersUrl:config.userInfo.userAtom.trailersUrl,
                 introduceMyselfMoveUrl:config.userInfo.userAtom.introduceMyselfMoveUrl,
             });
@@ -50,14 +62,8 @@ class Edit extends Component{
         }
     }
 
-    componentDidMount() {
-        fetchAccessToken().then(value => {
-            console.log(JSON.stringify(value));
-        },error => {);
-    }
-
-    onSelect(e){
-        this.setState({selectItem:e.key});
+    handleChange=(e)=>{
+        this.setState({selectItem:e});
     }
 
     sumbitUserInfo(data){
@@ -89,7 +95,7 @@ class Edit extends Component{
             value => {
                 this.setState({cover:value.data.url});
                 this.props.dispatch({ type:'edit/setCover',payload:{cover:value.data.url}});
-                },
+            },
             error => this.setState({error: error})
         );
     }         
@@ -131,7 +137,7 @@ class Edit extends Component{
     updateSecondVideo(files){
         var formData = new FormData();
         formData.append('userfile',files[0]);
-        fetchUpdateVideo2(formData).then(
+        fetchUpdateVideo(formData).then(
             value => {
                 this.props.dispatch({ type:'edit/updateSecondVideo',payload:{trailersUrl:value.data.url,introduceMyselfMoveUrl:''}});
                 this.setState({
@@ -164,58 +170,52 @@ class Edit extends Component{
             introduceMyselfMoveUrl,
         } = this.props.edit;
 
-        let component;
-        if (this.state.selectItem === 'info') {
-            component = <BaseInfo 
-                        persionTag = {persionTag} 
-                        specialtyTag = {specialtyTag} 
-                        submitData = {(data)=>{this.sumbitUserInfo(data)}}
-                        />;
-        }else if(this.state.selectItem === 'photo'){
-            component = <UpdatePhotos
-                            updateCover = {this.updateCover.bind(this)}
-                            updateHeaderImage = {this.updateHeaderImage.bind(this)} 
-                            updateImage = {this.updateImage.bind(this)}
-                        />; 
-        }else if(this.state.selectItem === 'video'){
-            component = <UpdateVideo
-                            trailersUrl = {this.state.trailersUrl}
-                            introduceMyselfMoveUrl = {this.state.introduceMyselfMoveUrl}
-                            updateVide_30 = {(e)=>this.updateFirstVideo(e)}
-                            updateVide_40 = {(e)=>this.updateSecondVideo(e)}
-                        />; 
-        }else if(this.state.selectItem === 'experience'){
-            component = <PerformExperience
-                            data = {experienceData}
-                            onDelect = {(id)=>this.onDelectExperience(id)}
-                        />; 
-        }else{
-
-        }
-
 	 	return (
+            <MuiThemeProvider>
             <div>
                 <div>
-                    <img src = {this.state.coverUrl } style ={{backgroundSize: 'cover',width:'100%',height:180}}/>
+                    <img src = {this.state.cover } style ={{backgroundSize: 'cover',width:'100%',height:180}}/>
                 </div>
                
                 <div>
-                    <Affix>
-    	    		<Menu 
-                        className = {styles.customMenu}
-                        mode = "horizontal"
-                        selectedKeys={[this.state.selectItem]}
-                        onSelect = {(e)=>this.onSelect(e)}
-                    >
-                        <Item key={'info'} className = { styles.customMenuItem }>个人资料</Item>
-                        <Item key={'photo'} className = { styles.customMenuItem }>照片</Item>
-                    	<Item key={'video'} className = { styles.customMenuItem }>视频</Item>
-                    	<Item key={'experience'} className = { styles.customMenuItem }>演员经历</Item>
-                    </Menu>
-                    </Affix>
-                    <div>{ component }</div>
+    	    		
+                    <Tabs
+                        value={this.state.selectItem}
+                        onChange={this.handleChange}
+                      >
+                        <Tab style = {tab_styles.menuItem} label="个人资料" value="info" >
+                            <BaseInfo 
+                                persionTag = {persionTag} 
+                                specialtyTag = {specialtyTag} 
+                                submitData = {(data)=>{this.sumbitUserInfo(data)}}
+                            />
+                        </Tab>
+                        <Tab style = {tab_styles.menuItem} label="照片" value="photo">
+                            <UpdatePhotos
+                                updateCover = {this.updateCover.bind(this)}
+                                updateHeaderImage = {this.updateHeaderImage.bind(this)} 
+                                updateImage = {this.updateImage.bind(this)}
+                            />
+                        </Tab>
+                        <Tab style = {tab_styles.menuItem} label="视频" value="video">
+                            <UpdateVideo
+                                trailersUrl = {this.state.trailersUrl}
+                                introduceMyselfMoveUrl = {this.state.introduceMyselfMoveUrl}
+                                updateVide_30 = {(e)=>this.updateFirstVideo(e)}
+                                updateVide_40 = {(e)=>this.updateSecondVideo(e)}
+                            />
+                        </Tab>
+                        <Tab style = {tab_styles.menuItem} label="演员经历" value="experience">
+                            <PerformExperience
+                                data = {experienceData}
+                                onDelect = {(id)=>this.onDelectExperience(id)}
+                            />
+                        </Tab>
+                      </Tabs>
+                    
                 </div>
             </div>
+            </MuiThemeProvider>
 		);
 	}
 };
@@ -227,3 +227,16 @@ function mapStateToProps({ edit }) {
 Edit.propTypes = EditType;
 
 export default connect(mapStateToProps)(Edit);
+
+
+ // <Menu 
+ //                        className = {styles.customMenu}
+ //                        mode = "horizontal"
+ //                        selectedKeys={[this.state.selectItem]}
+ //                        onSelect = {(e)=>this.onSelect(e)}
+ //                    >
+ //                        <Item key={'info'} className = { styles.customMenuItem }>个人资料</Item>
+ //                        <Item key={'photo'} className = { styles.customMenuItem }>照片</Item>
+ //                        <Item key={'video'} className = { styles.customMenuItem }>视频</Item>
+ //                        <Item key={'experience'} className = { styles.customMenuItem }>演员经历</Item>
+ //                    </Menu>

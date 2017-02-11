@@ -52,25 +52,26 @@ const Performer = ({
     		</Carousel>
 	  		{
 
-				resultObject.filter((data) => {
-					return data.status === 2;
-				}).map((data, i) => (
-				 	<Link to={`performerDetail/?detailId=${data.id}`} style = {{color:'#999'}}>
-		    			<PerformerListItem
-		    				key = {i}
-		    				cover = {data.cover}
-		    				nickName = {data.nickName}
-	  						ageGroup = {data.ageGroup}
-	  						sex = {data.sex}
-	  						specialtys = {data.specialtys}
-	  						tags = {data.tags}
-	  						weight = {data.weight}
-	  						height = {data.height}
-	  						hotDegree = {data.hotDegree}
-		    			/>
-		    		</Link>
-		    	))
+				resultObject.map((data, i) => {
+					return(
+						<Link to={`performerDetail/?detailId=${data.id}`} style = {{color:'#999'}}>
+			    			<PerformerListItem
+			    				key = {i}
+			    				cover = {data.cover}
+			    				nickName = {data.nickName}
+		  						ageGroup = {data.ageGroup}
+		  						sex = {data.sex}
+		  						specialtys = {data.specialtys}
+		  						tags = {data.tags}
+		  						weight = {data.weight}
+		  						height = {data.height}
+		  						hotDegree = {data.hotDegree}
+			    			/>
+			    		</Link>
+					)
+				})
 			}
+
 			<div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
 			</Nav>
 	  	</div>

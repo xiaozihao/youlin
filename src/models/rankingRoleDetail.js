@@ -8,7 +8,7 @@ export default {
 
 	state:{
 		resultObject:[],
-		thumbUpSuccess:true,
+		thumbUpSuccess:false,
 		nextPage:false,
 	},
 
@@ -46,18 +46,18 @@ export default {
 			   	if(req.data.success) {
 			   		yield put({type:'thumbUpSuccess',payload:{thumbUpSuccess:req.data.success}});
 			   	}else{
+			   		yield put({type:'thumbUpSuccess',payload:{thumbUpSuccess:false}});
 			   		if (req.data.code === -10) {			   			
 			   			alert(req.data.message + ', 请重试');
                         relanding();
+    					window.location.href = '/#/signup';
 			   		}else if (req.data.code === -1) {
 			   			localStorage.removeItem('MY_USER_INFO');
-    					window.location.href = '/#/';
+    					window.location.href = '/#/signup';
 			   		}else{
 			   			alert(req.data.message);
-			   			yield put({type:'thumbUpSuccess',payload:{thumbUpSuccess:false}});
 			   		}
 			   	}
-			  
 			}
 	    }, 
 
@@ -75,7 +75,7 @@ export default {
 		thumbUpSuccess(state,action){
 			return{
 				...state,
-				thumbUpSuccess:action.payload.thumbUpSuccess
+				...action.payload,
 			}
 		},
 

@@ -32,9 +32,7 @@ function OtherComment({
                 </div>
                 <div className={styles.comment}>
                     <Input size="large" placeholder="来一条评论吧" onChange = {changeValue} className={styles.item}/>
-                    <Button type="ghost" onClick = {onSumbit}>
-                    <Icon type="check-circle-o" className={styles.icon}/>
-                    </Button>
+                    <Button className = {styles.button} type="ghost" onClick = {onSumbit}><Icon type="check-circle-o" className={styles.icon}/></Button>
                 </div>
             </div>
         );

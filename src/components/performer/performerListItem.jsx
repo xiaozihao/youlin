@@ -36,39 +36,38 @@ const PerformerListItem = ({
 return (	
 	<div className = { styles.normal}>
         <div className = { styles.customCard}>
-    			<div className = {styles.customImage}>
-            <div style = {{ position:'relative' }}>
-                <img alt="example" width="100%" height="200" src = {cover}/>
-      				<p className={styles.recommend}>推荐</p>
+			<div className = {styles.customImage}>
+            <div>
+                <div className = {styles.img }>
+                    <img src = {cover}/>
+  				</div>
+                <p className={styles.recommend}></p>
+  				<div className={styles.topHot}><Icon className={styles.hot} type="" /><span>{hotDegree}</span></div>
+            </div>
 
-      				<div className={styles.topHot}>
-      					<Icon className={styles.hot} type="" /><span>{hotDegree}</span>
-      				</div>
-              </div>
-
-        			<div style = {{margin:5}}>
-        				<div className = { styles.opus }>
+            <div style = {{paddingTop:200}}>
+    			<div style = {{margin:5}}>
+    				<div className = { styles.opus }>
+                <div>
+					<p>{nickName}</p>
+					<p>{ageGroup}</p>
+                </div>
+    				<div>
+                        {vTags}
+    				</div>
+    			</div>
+    			<div className = { styles.time }>
                     <div>
-      					<p>{nickName}</p>
-      					<p>{ageGroup}</p>
-                    </div>
-    					<div>
-                            {vTags}
-    					</div>
-        			</div>
+          				<span>{sex === 1 ?'女':'男'} </span>
+                    <span>&nbsp;{height}&nbsp;cm&nbsp;&nbsp;&nbsp;{weight}&nbsp;kg</span>
+                </div>
+    		 		<div className={styles.tag}>
+    				   {specialtysTag}
+    				</div>
+    				</div>
+    			</div>
 
-                    
-                    
-        			<div className = { styles.time }>
-                        <div>
-              				<span>{sex === 1 ?'女':'男'} </span>
-                        <span>&nbsp;{height}&nbsp;cm&nbsp;&nbsp;&nbsp;{weight}&nbsp;kg</span>
-                    </div>
-    			 		<div className={styles.tag}>
-    					   {specialtysTag}
-    					</div>
-        				</div>
-        			</div>
+            </div>
     		</div>
 		</div>
 	</div>

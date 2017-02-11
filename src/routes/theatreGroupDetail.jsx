@@ -1,14 +1,18 @@
 import React,{ PropTypes,Component } from 'react';
 import pathToRegexp from 'path-to-regexp';
 import Modal from 'react-modal';
-import { Menu,Affix } from 'antd';
 import { connect } from 'dva';
 import FocusBar from '../components/FocusBar';
 import {fetchWXToken} from '../services/wxpay';
 import TheatreGroupInfo from '../components/theatreGroup/TheatreGroupInfo';
 import TheatreGroupRoleList from './theatreGroupRoleList';
 import img from '../assets/actor/search.png';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
 import styles from './theatreGroupDetail.less'
+
 
 const defaultProps = {
 
@@ -20,7 +24,13 @@ const propTypes = {
   location:PropTypes.object,
 };
 
-const Item = Menu.Item;
+const tab_styles = {
+    menuItem:{
+        backgroundColor:'#ffffff',
+        color:'#FC7E2A',
+        fontSize:17,
+    }
+}
 
 class TheatreGroupDetail extends Component{ 
 
@@ -35,6 +45,8 @@ class TheatreGroupDetail extends Component{
             curPageNo:1,
             isCheckRold:false,
             roleData:[],
+            value: 'crew',
+
         }
         this.openModal = this.openModal.bind(this);
         // this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -49,17 +61,13 @@ class TheatreGroupDetail extends Component{
          window.location.reload();    
     }
 
-    onSelect(e){
-        this.setState({selectItem:e.key});
-        if (e.key === 'roleInfo') {
-            this.setState({collectionId:2});
-        }else{
-            this.setState({collectionId:1});
-        }   
-    }
+
+    handleChange = (value) => { 
+        this.setState({value: value});
+    };
 
     onCollection(type,id){
-        this.props.dispatch({ type:'theatreGroupDetail/collection', payload:{ type:type,id:id} });
+        this.props.dispatch({ type:'theatreGroupDetail/collection', payload:{ type:1,id:id} });
     }
 
     openModal() {
@@ -113,38 +121,35 @@ class TheatreGroupDetail extends Component{
         }   
 
         return (
-            <div>
-                <FocusBar
-                    isNewest = {crewInfo.isNewest}
-                    Keyword2 = {createTime === now?'今日新剧':''}
-                    isFirst = {crewInfo.isFirst}
-                    cover = {crewInfo.cover}
-                    onShare = {()=>this.openModal()}
-                    onCollection = {this.onCollection.bind(this,this.state.collectionId,crewInfo.id)}
-                    isCollection = { isCollection }
-                    status = {crewInfo.status}
-                />
-                <Menu 
-                    className = {styles.menu}
-                    mode = "horizontal"
-                    selectedKeys={[this.state.selectItem]}
-                    onSelect = {(e)=>this.onSelect(e)}
-                >
-                    <Item key={'crewInfo'} className = { styles.menuItem }>剧组信息</Item>
-                    <Item key={'roleInfo'} className = { styles.menuItem }>演员信息</Item>
-                </Menu>
+            <MuiThemeProvider>
                 <div>
-                    {
-                        this.state.selectItem === 'crewInfo' ? 
-                        <TheatreGroupInfo infoData = {crewInfo}/> :
-                        (<div>
-                            <TheatreGroupRoleList data = { roledata }/>
-                            <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
-                        </div>) 
-                        
-                    }
-                </div>
-                 <Modal
+                    <FocusBar
+                        isNewest = {crewInfo.isNewest}
+                        Keyword2 = {createTime === now?'今日新剧':''}
+                        isFirst = {crewInfo.isFirst}
+                        cover = {crewInfo.cover}
+                        onShare = {()=>this.openModal()}
+                        onCollection = {this.onCollection.bind(this,crewInfo.id)}
+                        isCollection = { isCollection }
+                        status = {crewInfo.status}
+                    />
+
+                     <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                      >
+                        <Tab style = {tab_styles.menuItem} label="剧组详情" value="crew" >
+                            <TheatreGroupInfo infoData = {crewInfo}/>
+                        </Tab>
+                        <Tab style = {tab_styles.menuItem} label="可申请角色" value="actor">
+                            <div>
+                                <TheatreGroupRoleList data = { roledata }/>
+                                <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
+                            </div>
+                        </Tab>
+                      </Tabs>
+
+                    <Modal
                         isOpen={this.state.modalIsOpen}
                         onAfterOpen={this.afterOpenModal}
                         onRequestClose={this.closeModal}
@@ -152,7 +157,8 @@ class TheatreGroupDetail extends Component{
                     >
                         <img onClick = {()=>this.closeModal()} src = {img} width = '100%' height = '100%'/>
                     </Modal>
-            </div>
+                </div>
+            </MuiThemeProvider>
         );
     }
 };
@@ -177,3 +183,4 @@ TheatreGroupDetail.defaultProps = defaultProps;
 TheatreGroupDetail.propTypes = propTypes;
 
 export default connect(mapStateToProps)(TheatreGroupDetail);
+

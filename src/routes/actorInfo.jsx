@@ -2,6 +2,10 @@ import React,{ Component, PropTypes } from 'react';
 import { Menu,Affix} from 'antd';
 import { connect } from 'dva';
 import pathToRegexp from 'path-to-regexp';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
 import RolePerformerInfo from '../components/performer/rolePerformerInfo';
 import OtherComment from '../components/performer/otherComment';
 import FocusBar from '../components/FocusBar';
@@ -20,6 +24,14 @@ const styles = {
         color: '#FE7E14',
     },
 };
+
+const tab_styles = {
+    menuItem:{
+        backgroundColor:'#ffffff',
+        color:'#FC7E2A',
+        fontSize:17,
+    }
+}
 
 const Item = Menu.Item;
 
@@ -49,17 +61,11 @@ class ActorInfo extends Component{
 
     }
 
-    onSelect(e,userId){
-
-        this.setState({selectItem:e.key});
-
-        if (e.key === 'otherComment') {
+    handleChange(value,userId){
+        this.setState({selectItem:value});
+        if (value === 'otherComment') {
             this.props.dispatch({type: 'actorInfo/otherComment',payload:{toUserId:userId,pageNo:0,pageSize:100} });
         }
-    }
-
-    onCollection(){
-
     }
 
     changeValue(e){
@@ -84,32 +90,30 @@ class ActorInfo extends Component{
     const { infoData,commnetData } = this.props.actorInfo;
 
     return (  
+        <MuiThemeProvider>
         <div>
             <img src = {banner} width='100%' height = '170'/>
-            <Menu 
-                style = {styles.tab}
-                mode = "horizontal"
-                selectedKeys={[this.state.selectItem]}
-                onSelect = {(e)=>this.onSelect(e,infoData.userId)}
-            >
-                <Item key={'persionInfo'} style = { styles.tabItem }>个人信息</Item>
-                <Item key={'otherComment'} style = { styles.tabItem }>他人评价</Item>
-            </Menu>
-            <div>
-                {
-                    this.state.selectItem === 'persionInfo' ? 
+            <Tabs
+                value={this.state.selectItem}
+                onChange={(value)=>this.handleChange(value,infoData.userId)}
+              >
+                <Tab style = {tab_styles.menuItem} label="个人信息" value="persionInfo" >
                     <RolePerformerInfo
                         data ={infoData}
                         roleId = {roldIdNumber}
                         groundId = {groundIdNumber}
-                    />: <OtherComment
-                            data = {commnetData}
-                            changeValue = {(e)=>this.changeValue(e)}
-                            onSumbit = {()=>this.onSumbit(infoData.userId)}
                     />
-                }
-            </div>
+                </Tab>
+                <Tab style = {tab_styles.menuItem} label="他人评价" value="otherComment">
+                    <OtherComment
+                        data = {commnetData}
+                        changeValue = {(e)=>this.changeValue(e)}
+                        onSumbit = {()=>this.onSumbit(infoData.userId)}
+                    />
+                </Tab>
+              </Tabs>
         </div>
+        </MuiThemeProvider>
     );
   }
 };

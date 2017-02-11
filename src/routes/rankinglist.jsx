@@ -1,5 +1,4 @@
 import React, { Component ,PropTypes} from 'react';
-import { Menu } from 'antd';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
 import styles from './rankinglist.less';
@@ -7,17 +6,24 @@ import Nav from '../components/layout/nav';
 import HostestRole from '../components/rankingList/hotRole';
 import AllRole from '../components/rankingList/allRoleList';
 
-const Item = Menu.Item;
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-const defaultProps = {
-
-};
+const defaultProps = {};
 
 const propTypes = {
   rankinglist:PropTypes.object,
   dispatch:PropTypes.func,
   location:PropTypes.object,
 };
+
+const tab_styles = {
+    menuItem:{
+        backgroundColor:'#FC7E2A',
+        color:'#fff',
+        fontSize:17,
+    }
+}
 
 
 class Rankinglist extends Component {
@@ -28,8 +34,8 @@ class Rankinglist extends Component {
              selectItem: 'hotestRole',
              hotestRoldCurPageNo: 1,
              allHotRoldCurPageNo: 1,
-             fetchAllhot:false,
              loading:true,
+             value:'hotestRole',
         }
     }
 
@@ -41,13 +47,8 @@ class Rankinglist extends Component {
          window.location.reload();    
     }
 
-    onSelect(e){
-        this.setState({
-            selectItem:e.key,
-            hotestRoldCurPageNo: 1,
-            allHotRoldCurPageNo: 1,
-            fetchAllhot:true,
-        });
+    handleChange=(value)=>{
+        this.setState({selectItem:value});
     }
 
     onNextPage(){
@@ -78,27 +79,24 @@ class Rankinglist extends Component {
         }   
 
         return (
-            <div style = {{paddingBottom:50}}>
-                <Nav>
-                 <Menu 
-                    className = {styles.tab}
-                    mode = "horizontal"
-                    selectedKeys={[this.state.selectItem]}
-                     onSelect = {(e)=>this.onSelect(e)}
-                >
-                    <Item key={'hotestRole'} className = { styles.tabItem }>最热角色</Item>
-                    <Item key={'allHot'} className = { styles.tabItem }>总热度</Item>
-                </Menu>
-                <div>
-                   {
-                        this.state.selectItem === 'hotestRole' ?
-                        <HostestRole data = {hotestRoleData ? hotestRoleData:[]}/>:
-                        <AllRole data = { allRoleData?allRoleData:[] }/>
-                   }
+            <MuiThemeProvider>
+                <div style = {{paddingBottom:50}}>
+                    <Nav>
+                        <Tabs
+                            value={this.state.selectItem}
+                            onChange={this.handleChange}
+                          >
+                            <Tab style = {tab_styles.menuItem} label="最热角色" value="hotestRole" >
+                                <HostestRole data = {hotestRoleData ? hotestRoleData:[]}/>
+                            </Tab>
+                            <Tab style = {tab_styles.menuItem} label="总热度" value="allHot">
+                                <AllRole data = { allRoleData?allRoleData:[] }/>
+                            </Tab>
+                        </Tabs>
+                    <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
+                    </Nav>
                 </div>
-                <div style = {{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:10,paddingBottom:20}} className = {styles.loadMoreButton}>{vNextPage}</div> 
-                </Nav>
-            </div>
+            </MuiThemeProvider>
         );
     }
 };
